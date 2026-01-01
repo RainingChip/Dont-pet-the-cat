@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=3 uid="uid://6ri6gvfq7we0"]
+
+[ext_resource type="Script" uid="uid://dkgoxe2aj583g" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://bgk2ifcibbqc8" path="res://Images and Sounds/park_BG1.jpg" id="2_7mycd"]
+[ext_resource type="Texture2D" uid="uid://sdvsiroh1dj8" path="res://Images and Sounds/cat_normal.png" id="3_272bh"]
+[ext_resource type="Texture2D" uid="uid://blguaf8osrynm" path="res://Images and Sounds/nuke.jpg" id="3_h2yge"]
+[ext_resource type="AudioStream" uid="uid://bphsbwmjh8roe" path="res://Images and Sounds/Fuck.mp3" id="4_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://dfplagqnvxq5g" path="res://Images and Sounds/cat_petted.png" id="4_5vw27"]
+[ext_resource type="AudioStream" uid="uid://db7nj8oq6y1mi" path="res://Images and Sounds/cat meow.mp3" id="5_lquwl"]
+[ext_resource type="AudioStream" uid="uid://b0i32qrasy60" path="res://Images and Sounds/dont pet cat song.wav" id="6_5vw27"]
+[ext_resource type="AudioStream" uid="uid://cp2b8ju5tuva" path="res://Images and Sounds/cat screech 2.mp3" id="8_kek77"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+bg_color = Color(0, 0, 0, 0.44313726)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kek77"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_272bh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5vw27")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_0xm2m")
+
+[node name="ParkBg1" type="Sprite2D" parent="."]
+position = Vector2(640.50006, 357.5)
+scale = Vector2(3.0470588, 2.6487455)
+texture = ExtResource("2_7mycd")
+
+[node name="Title" type="RichTextLabel" parent="."]
+offset_left = -1.0
+offset_right = 1276.0
+offset_bottom = 118.0
+size_flags_horizontal = 4
+theme_override_font_sizes/normal_font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_272bh")
+bbcode_enabled = true
+text = "Don't [wave amp=100.0 freq=10.0 connected=1]FUCKING [/wave]Pet The Cat 10 Times "
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Cat" type="AnimatedSprite2D" parent="."]
+position = Vector2(672, 495.00006)
+scale = Vector2(0.385, 0.385)
+sprite_frames = SubResource("SpriteFrames_kek77")
+
+[node name="Button" type="Button" parent="Cat"]
+modulate = Color(15.934141, 13.539555, 8.327809, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1137.5066
+offset_top = -1026.9222
+offset_right = -25.81836
+offset_bottom = 6.844116
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Explode" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(689.00006, 389)
+scale = Vector2(1.175, 1.1916667)
+texture = ExtResource("3_h2yge")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_5vw27")
+volume_db = -15.146
+autoplay = true
+
+[node name="ExplodeSound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("4_1bvp3")
+
+[node name="CatScream" type="AudioStreamPlayer2D" parent="Sounds"]
+position = Vector2(658, 461)
+stream = ExtResource("8_kek77")
+
+[node name="Meow" type="AudioStreamPlayer2D" parent="Sounds"]
+position = Vector2(400, 550)
+stream = ExtResource("5_lquwl")
+max_polyphony = 15
+
+[connection signal="pressed" from="Cat/Button" to="." method="_on_button_pressed"]
