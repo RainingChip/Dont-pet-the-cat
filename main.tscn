@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://6ri6gvfq7we0"]
+[gd_scene load_steps=17 format=3 uid="uid://6ri6gvfq7we0"]
 
 [ext_resource type="Script" uid="uid://dkgoxe2aj583g" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://bgk2ifcibbqc8" path="res://Images and Sounds/park_BG1.jpg" id="2_7mycd"]
@@ -7,11 +7,13 @@
 [ext_resource type="AudioStream" uid="uid://bphsbwmjh8roe" path="res://Images and Sounds/Fuck.mp3" id="4_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://dfplagqnvxq5g" path="res://Images and Sounds/cat_petted.png" id="4_5vw27"]
 [ext_resource type="AudioStream" uid="uid://db7nj8oq6y1mi" path="res://Images and Sounds/cat meow.mp3" id="5_lquwl"]
-[ext_resource type="AudioStream" uid="uid://b0i32qrasy60" path="res://Images and Sounds/dont pet cat song.wav" id="6_5vw27"]
+[ext_resource type="AudioStream" uid="uid://d1a0sg3phnk3a" path="res://Images and Sounds/dont pet cat song.ogg" id="6_kek77"]
 [ext_resource type="AudioStream" uid="uid://cp2b8ju5tuva" path="res://Images and Sounds/cat screech 2.mp3" id="8_kek77"]
+[ext_resource type="Texture2D" uid="uid://b3327uy5rlkfe" path="res://Images and Sounds/hat.png" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://clnj2ybtnbpne" path="res://Images and Sounds/fireworks.png" id="11_efxa6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
-bg_color = Color(0, 0, 0, 0.44313726)
+bg_color = Color(0, 0, 0, 0.19607843)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kek77"]
 animations = [{
@@ -26,6 +28,55 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="Animation" id="Animation_dg77c"]
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Hat:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(547, -102.00003), Vector2(543, 370)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer/Fireworks:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(5.59, 7.97),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-0.007, -0.009), Vector2(0.49308735, 0.65333325)]
+}
+
+[sub_resource type="Animation" id="Animation_efxa6"]
+resource_name = "hat_fall"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer/Hat:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(547, -102.00003), Vector2(541, 373)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ycdy4"]
+_data = {
+&"RESET": SubResource("Animation_dg77c"),
+&"hat_fall": SubResource("Animation_efxa6")
+}
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
@@ -73,12 +124,20 @@ position = Vector2(689.00006, 389)
 scale = Vector2(1.175, 1.1916667)
 texture = ExtResource("3_h2yge")
 
+[node name="2ndEnding" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+autostart = true
+
 [node name="Sounds" type="Node" parent="."]
 
-[node name="Music" type="AudioStreamPlayer2D" parent="Sounds"]
-stream = ExtResource("6_5vw27")
+[node name="Music1" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_kek77")
 volume_db = -15.146
 autoplay = true
+
+[node name="Music2" type="AudioStreamPlayer2D" parent="Sounds"]
 
 [node name="ExplodeSound" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("4_1bvp3")
@@ -92,4 +151,21 @@ position = Vector2(400, 550)
 stream = ExtResource("5_lquwl")
 max_polyphony = 15
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ycdy4")
+}
+speed_scale = 1.5
+
+[node name="Hat" type="Sprite2D" parent="AnimationPlayer"]
+position = Vector2(547, -102.00003)
+scale = Vector2(0.5, 0.578)
+texture = ExtResource("10_4c57u")
+
+[node name="Fireworks" type="Sprite2D" parent="AnimationPlayer"]
+position = Vector2(639.5625, 380.99997)
+scale = Vector2(-0.007, -0.009)
+texture = ExtResource("11_efxa6")
+
 [connection signal="pressed" from="Cat/Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="2ndEnding" to="." method="_on_nd_ending_timeout"]
